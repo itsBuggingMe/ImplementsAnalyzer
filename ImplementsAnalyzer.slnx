@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="ImplementsAnalyzer/ImplementsAnalyzer.csproj" />
+  <Project Path="ImplementsAttributeExample/ImplementsAttributeExample.csproj" />
+</Solution>
