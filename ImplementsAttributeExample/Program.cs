@@ -9,7 +9,7 @@ internal class Program : IDisposable
         Console.WriteLine("Compiled!");
     }
 
-    [Impl]
+    [Impl<IDisposable>]
     public void Dispose()
     {
 
