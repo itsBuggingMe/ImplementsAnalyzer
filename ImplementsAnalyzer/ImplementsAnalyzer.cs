@@ -15,7 +15,7 @@ internal class ImplementsAnalyzer : DiagnosticAnalyzer
     public static readonly DiagnosticDescriptor MissingInterfaceDeclarator = new(
         id: "EN0000",
         title: "Missing Explicit Interface Declaration",
-        messageFormat: "Method {0} missing explicit [Implements] decorator",
+        messageFormat: "Method {0} missing explicit [Impl] decorator",
         category: "Usage",
         DiagnosticSeverity.Error,
         isEnabledByDefault: true);
