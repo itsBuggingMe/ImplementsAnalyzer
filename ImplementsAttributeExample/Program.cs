@@ -2,7 +2,7 @@
 
 namespace ImplementsAttributeExample;
 
-internal class Program : IDisposable
+internal class Program : IDisposable, IA
 {
     static void Main()
     {
@@ -14,4 +14,12 @@ internal class Program : IDisposable
     {
 
     }
+
+    [Impl<IA>]
+    public int X { get; set; }
+}
+
+interface IA
+{
+    public int X { get; set; }
 }

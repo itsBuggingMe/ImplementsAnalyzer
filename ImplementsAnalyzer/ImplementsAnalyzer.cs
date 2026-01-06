@@ -51,19 +51,24 @@ internal class ImplementsAnalyzer : DiagnosticAnalyzer
             .AllInterfaces
             .SelectMany(i => i.GetMembers().OfType<IMethodSymbol>().Select(m => (m, i))))
         {
+
             if (type.FindImplementationForInterfaceMember(interfaceDefinition) is not IMethodSymbol methodOnConcreteType)
             {// type doesn't implement interface member; normal compiler error
 
             }
-            else if(!MethodHasAttributeWithGenericArgument(methodOnConcreteType, ImplementsAttributeMetadataName, interfaceType))
+            else if(
+                // handle case where attribute is on directly
+                !SymbolHasAttributeWithGenericArgument(methodOnConcreteType, ImplementsAttributeMetadataName, interfaceType) &&
+                // and its not the case were its on the property
+                !(methodOnConcreteType.AssociatedSymbol is IPropertySymbol p && SymbolHasAttributeWithGenericArgument(p, ImplementsAttributeMetadataName, interfaceType)))
             {// missing Impl<T> attribute
-                Report(MissingInterfaceDeclarator, methodOnConcreteType, type.Name, interfaceType.Name);
+                Report(MissingInterfaceDeclarator, methodOnConcreteType, methodOnConcreteType.Name, interfaceType.Name);
             }
         }
 
-        static bool MethodHasAttributeWithGenericArgument(IMethodSymbol method, string metadataName, INamedTypeSymbol genericArg)
+        static bool SymbolHasAttributeWithGenericArgument(ISymbol symbol, string metadataName, INamedTypeSymbol genericArg)
         {
-            return method
+            return symbol
                 .GetAttributes()
                 .Any(a => 
                     a.AttributeClass is INamedTypeSymbol attr &&
